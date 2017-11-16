@@ -1,10 +1,11 @@
-Yet another Terimnate Button (YaTB) for Eclipse
+Yet another Terminate Button (YaTB) for Eclipse
 ====
 
 ## Why
 
-Sometime we running the application with buzy threads which make Eclipse build-in process terminate button can't stop the process.
-That's why this new button here, it will force kill the process with `kill -9 <pid>` internally for Linux-like and OSX platform.
+Sometimes there are clean up tasks when shutting down certain processes.
+Eclipse however doesn't signal a normal shutdown and hence doesn't trigger these tasks.
+That's why this new button here. It will signal the process a normal shutdown request with `kill -s <pid>` internally for Linux-like and OSX platforms.
 
 ## Installation
 
