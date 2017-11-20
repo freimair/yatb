@@ -129,8 +129,8 @@ public class ConsoleActions implements IConsolePageParticipant {
 							int pid = (int) f.get(proc);
 
 							Runtime rt = Runtime.getRuntime();
-							if (hard) rt.exec("kill -9 " + pid);
-							else      rt.exec("kill -s " + pid);
+							if (hard) rt.exec("kill -SIGKILL " + pid);
+							else      rt.exec("kill -SIGTERM " + pid);
 						} catch (Exception ex) {
 							Activator.log(ex);
 						}
