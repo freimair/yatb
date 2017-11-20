@@ -22,8 +22,6 @@ import org.eclipse.ui.console.IConsolePageParticipant;
 import org.eclipse.ui.part.IPageBookViewPage;
 import org.eclipse.ui.part.IPageSite;
 
-import buttons.Activator;
-
 public class ConsoleActions implements IConsolePageParticipant {
 
 	private IPageBookViewPage page;
