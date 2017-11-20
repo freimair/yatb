@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/com.github.eclipse.yatb.features_1.0.0.201707121729.jar" id="com.github.eclipse.yatb.features" version="1.0.0.201707121729">
+   <feature url="features/com.github.eclipse.yatb.features_1.0.0.201711201317.jar" id="com.github.eclipse.yatb.features" version="1.0.0.201711201317">
       <category name="yatb"/>
    </feature>
    <category-def name="yatb" label="Yet another Terminate Button">
