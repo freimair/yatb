@@ -9,6 +9,9 @@ That's why this new button here. It will signal the process a normal shutdown re
 
 ## Installation
 
-Update site: https://github.com/missedone/yatb/raw/master/dist
+1. Download the dist folder in this repository
+2. in Eclipse open Help -> Install new Software... -> Add... -> Local...
+3. Select the dist folder
+4. Select the plugin and proceed like normal
 
 Based on the original YaTB plugin by Nick Tan.
