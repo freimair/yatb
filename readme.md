@@ -1,4 +1,4 @@
-Yet another Terminate Button (YaTB) for Eclipse
+Yet some other Terminate Buttons for Eclipse
 ====
 
 ## Why
@@ -10,3 +10,5 @@ That's why this new button here. It will signal the process a normal shutdown re
 ## Installation
 
 Update site: https://github.com/missedone/yatb/raw/master/dist
+
+Based on the original YaTB plugin by Nick Tan.

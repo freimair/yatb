@@ -25,8 +25,10 @@ import org.eclipse.ui.part.IPageSite;
 public class ConsoleActions implements IConsolePageParticipant {
 
 	private IPageBookViewPage page;
-	private Action terminateAction;
-	private Action terminateAllAction;
+	private Action terminateHardAction;
+	private Action terminateAllHardAction;
+	private Action terminateSoftAction;
+  private Action terminateAllSoftAction;
 	private IActionBars bars;
 	private IConsole console;
 
@@ -37,8 +39,10 @@ public class ConsoleActions implements IConsolePageParticipant {
 		IPageSite site = page.getSite();
 		this.bars = site.getActionBars();
 
-		terminateAction = createTerminateButton();
-		terminateAllAction = createTerminateAllButton();
+		terminateHardAction = createTerminateHardButton();
+    terminateAllHardAction = createTerminateAllHardButton();
+    terminateSoftAction = createTerminateSoftButton();
+    terminateAllSoftAction = createTerminateAllSoftButton();
 
 		bars.getMenuManager().add(new Separator());
 
@@ -50,35 +54,63 @@ public class ConsoleActions implements IConsolePageParticipant {
 		bars.updateActionBars();
 	}
 
-	private Action createTerminateButton() {
-		ImageDescriptor imageDescriptor = ImageDescriptor.createFromFile(getClass(), "/icons/terminate_rem_co.gif");
-		return new Action("Kill Process", imageDescriptor) {
-			@Override
-			public void run() {
-				if (console instanceof ProcessConsole) {
-					RuntimeProcess runtimeProcess = (RuntimeProcess) ((ProcessConsole) console)
-							.getAttribute(IDebugUIConstants.ATTR_CONSOLE_PROCESS);
-					ILaunch launch = runtimeProcess.getLaunch();
-					stopProcess(launch);
-				}
-			}
-		};
-	}
+	private Action createTerminateHardButton() {
+    ImageDescriptor imageDescriptor = ImageDescriptor.createFromFile(getClass(), "/icons/terminate_hard.gif");
+    return new Action("Kill Process", imageDescriptor) {
+      @Override
+      public void run() {
+        if (console instanceof ProcessConsole) {
+          RuntimeProcess runtimeProcess = (RuntimeProcess) ((ProcessConsole) console)
+              .getAttribute(IDebugUIConstants.ATTR_CONSOLE_PROCESS);
+          ILaunch launch = runtimeProcess.getLaunch();
+          stopProcess(launch, true);
+        }
+      }
+    };
+  }
 
-	private Action createTerminateAllButton() {
-		ImageDescriptor imageDescriptor = ImageDescriptor.createFromFile(getClass(), "/icons/terminate_all.gif");
-		return new Action("Kill All Processes", imageDescriptor) {
-			@Override
-			public void run() {
-				ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
-				for (ILaunch launch : launches) {
-					stopProcess(launch);
-				}
-			}
-		};
-	}
+  private Action createTerminateAllHardButton() {
+    ImageDescriptor imageDescriptor = ImageDescriptor.createFromFile(getClass(), "/icons/terminate_all_hard.gif");
+    return new Action("Kill All Processes", imageDescriptor) {
+      @Override
+      public void run() {
+        ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
+        for (ILaunch launch : launches) {
+          stopProcess(launch, true);
+        }
+      }
+    };
+  }
+  
+  private Action createTerminateSoftButton() {
+    ImageDescriptor imageDescriptor = ImageDescriptor.createFromFile(getClass(), "/icons/terminate_soft.gif");
+    return new Action("Request Shutdown from Process", imageDescriptor) {
+      @Override
+      public void run() {
+        if (console instanceof ProcessConsole) {
+          RuntimeProcess runtimeProcess = (RuntimeProcess) ((ProcessConsole) console)
+              .getAttribute(IDebugUIConstants.ATTR_CONSOLE_PROCESS);
+          ILaunch launch = runtimeProcess.getLaunch();
+          stopProcess(launch, false);
+        }
+      }
+    };
+  }
 
-	private void stopProcess(ILaunch launch) {
+  private Action createTerminateAllSoftButton() {
+    ImageDescriptor imageDescriptor = ImageDescriptor.createFromFile(getClass(), "/icons/terminate_all_soft.gif");
+    return new Action("Request Shutdown from all Processes", imageDescriptor) {
+      @Override
+      public void run() {
+        ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
+        for (ILaunch launch : launches) {
+          stopProcess(launch, false);
+        }
+      }
+    };
+  }
+
+	private void stopProcess(ILaunch launch, boolean hard) {
 		if (launch != null && !launch.isTerminated()) {
 			try {
 				if (Platform.OS_WIN32.equals(Platform.getOS())) {
@@ -94,14 +126,9 @@ public class ConsoleActions implements IConsolePageParticipant {
 							f.setAccessible(true);
 							int pid = (int) f.get(proc);
 
-							// force kill the process on OSX and Linux-like
-							// platform
-							// since on Linux the default behaviour of
-							// Process.destroy() is to
-							// gracefully shutdown
-							// which rarely can stop the busy process
 							Runtime rt = Runtime.getRuntime();
-							rt.exec("kill -9 " + pid);
+							if (hard) rt.exec("kill -9 " + pid);
+							else      rt.exec("kill -s " + pid);
 						} catch (Exception ex) {
 							Activator.log(ex);
 						}
