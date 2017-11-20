@@ -22,13 +22,15 @@ import org.eclipse.ui.console.IConsolePageParticipant;
 import org.eclipse.ui.part.IPageBookViewPage;
 import org.eclipse.ui.part.IPageSite;
 
+import buttons.Activator;
+
 public class ConsoleActions implements IConsolePageParticipant {
 
 	private IPageBookViewPage page;
 	private Action terminateHardAction;
 	private Action terminateAllHardAction;
 	private Action terminateSoftAction;
-  private Action terminateAllSoftAction;
+	private Action terminateAllSoftAction;
 	private IActionBars bars;
 	private IConsole console;
 
@@ -40,16 +42,18 @@ public class ConsoleActions implements IConsolePageParticipant {
 		this.bars = site.getActionBars();
 
 		terminateHardAction = createTerminateHardButton();
-    terminateAllHardAction = createTerminateAllHardButton();
-    terminateSoftAction = createTerminateSoftButton();
-    terminateAllSoftAction = createTerminateAllSoftButton();
+	    terminateAllHardAction = createTerminateAllHardButton();
+	    terminateSoftAction = createTerminateSoftButton();
+	    terminateAllSoftAction = createTerminateAllSoftButton();
 
 		bars.getMenuManager().add(new Separator());
 
 		IToolBarManager toolbarManager = bars.getToolBarManager();
 
-		toolbarManager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, terminateAction);
-		toolbarManager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, terminateAllAction);
+		toolbarManager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, terminateHardAction);
+		toolbarManager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, terminateAllHardAction);
+		toolbarManager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, terminateSoftAction);
+		toolbarManager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, terminateAllSoftAction);
 
 		bars.updateActionBars();
 	}
@@ -142,8 +146,10 @@ public class ConsoleActions implements IConsolePageParticipant {
 
 	@Override
 	public void dispose() {
-		terminateAction = null;
-		terminateAllAction = null;
+		terminateHardAction = null;
+		terminateAllHardAction = null;
+		terminateSoftAction = null;
+		terminateAllSoftAction = null;
 		bars = null;
 		page = null;
 	}
@@ -166,8 +172,10 @@ public class ConsoleActions implements IConsolePageParticipant {
 	private void updateVis() {
 		if (page == null)
 			return;
-		terminateAction.setEnabled(true);
-		terminateAllAction.setEnabled(true);
+		terminateHardAction.setEnabled(true);
+		terminateAllHardAction.setEnabled(true);
+		terminateSoftAction.setEnabled(true);
+		terminateAllSoftAction.setEnabled(true);
 		bars.updateActionBars();
 	}
 
