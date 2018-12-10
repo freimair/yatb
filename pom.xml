@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <tycho.version>0.24.0</tycho.version>
+        <tycho.version>1.2.0</tycho.version>
     </properties>
 
     <modules>
@@ -80,7 +80,7 @@
         <repository>
             <id>luna</id>
             <layout>p2</layout>
-            <url>http://download.eclipse.org/releases/luna</url>
+            <url>http://download.eclipse.org/releases/2018-09</url>
         </repository>
     </repositories>
 </project>
