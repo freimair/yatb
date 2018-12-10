@@ -19,7 +19,7 @@ The buttons make it possible to send a `kill -SIGKILL` signal to them.
 
 1. Download the dist folder in this repository
 2. in Eclipse open Help -> Install new Software... -> Add... -> Local...
-3. Select the dist folder
+3. Select the site/target/site folder
 4. Select the plugin and proceed like normal
 
 Based on the original YaTB plugin by Nick Tan.
